@@ -32,15 +32,19 @@ uВаши разделы должны выглядеть примерно так
 <img src="./examples/1.png" height=420> <br>
 В моем случае, /dev/nvme0n1p1 - это будет ESP, а root будет /dev/nvme0n1p2. <br>
 
-Теперь, мы отформатируем разделы. <br>
+Теперь, мы отформатируем разделы.
 
 ## UEFI:
-```mkfs.vfat -F32 /dev/sda1``` <br>
-```mkfs.ext4 /dev/sda2``` <br>
+```
+mkfs.vfat -F32 /dev/sda1
+mkfs.ext4 /dev/sda2
+```
 
 ## Legacy
-```mkfs.ext2 /dev/sda1``` <br>
-```mkfs.ext4 /dev/sda2``` <br>
+```
+mkfs.ext2 /dev/sda1
+mkfs.ext4 /dev/sda2
+```
 
 # 1.4 Установка базы
 Мы должны создать директорию для монтирования, и вмонтировать наш root-раздел. Это всё делается за одну линию: <br>
