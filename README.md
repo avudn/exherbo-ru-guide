@@ -105,8 +105,10 @@ source /etc/profile
 export PS1="(chroot) $PS1"
 ```
 
-Проверьте что Paludis настроен правильно. Это можно пропустить.
-```cd /etc/paludis && vim bashrc && vim *conf```
+Проверьте что Paludis настроен правильно. Это можно пропустить. <br>
+```bash
+cd /etc/paludis && vim bashrc && vim *conf
+```
 
 ## Совет:
 Поставьте в /etc/paludis/options.conf, найдите */* build_options: jobs=2, и поменяйте значение jobs на количество ваших потоков процессора чтобы пакеты компилировались быстрее. Чтобы узнать количество потоков, напишите ```nproc``` в терминале. <br>
