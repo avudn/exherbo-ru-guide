@@ -52,7 +52,6 @@ uВаши разделы должны выглядеть примерно так
 После того как вы скачали этот файл, можно прописать ```tar xJpf exherbo*xz```, чтобы распаковать все. 
 
 # 1.5 fstab
-# 1.5 fstab
 
 Чтобы наша система запустилась, нам нужно создать файл `fstab`. В нём расписано, что и как нужно монтировать при запуске системы.
 
@@ -76,8 +75,22 @@ echo "/dev/sda1    /boot/efi    vfat    defaults    0 0" >> /mnt/exherbo/etc/fst
 Если используется **Legacy/BIOS**:
 
 ```bash
-echo "/dev/sda1    /boot       ext2    defaults    0 0" >> /mnt/exherbo/etc/fstab
-```
+echo "/dev/sda1    /boot/efi       ext2    defaults    0 0" >> /mnt/exherbo/etc/fstab
+``` <br>
+
+# 1.6 Chroot, установка ядра.
+Монтируем по очереди: <br>
+
+```bash
+mount -o rbind /dev /mnt/exherbo/dev/
+``` <br>
+
+```bash
+mount -o rbind /sys /mnt/exherbo/sys/
+mount -t proc none /mnt/exherbo/proc/
+mkdir -p /mnt/exherbo/boot/efi 
+mount /dev/sda1 /mnt/exherbo/boot/efi
+``` <br>
 
 
 
