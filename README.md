@@ -32,7 +32,7 @@ sys-boot/grub efi
 cfdisk /dev/sda
 ```
 
-uВаши разделы должны выглядеть примерно так: <br>
+Ваши разделы должны выглядеть примерно так: <br>
 <img src="./examples/1.png" height=420> <br>
 В моем случае, /dev/nvme0n1p1 - это будет ESP, а root будет /dev/nvme0n1p2. <br>
 
