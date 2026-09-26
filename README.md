@@ -35,12 +35,12 @@ USE-флаги, это флаги которые ты выставляешь п�
 Теперь, мы отформатируем разделы. <br>
 
 ## UEFI:
-mkfs.vfat -F32 /dev/sda1 <br>
-mkfs.ext4 /dev/sda2 <br>
+```mkfs.vfat -F32 /dev/sda1``` <br>
+```mkfs.ext4 /dev/sda2``` <br>
 
 ## Legacy
-mkfs.ext2 /dev/sda1 <br>
-mkfs.ext4 /dev/sda2 <br>
+```mkfs.ext2 /dev/sda1``` <br>
+```mkfs.ext4 /dev/sda2``` <br>
 
 # 1.4 Установка базы
 Мы должны создать директорию для монтирования, и вмонтировать наш root-раздел. Это всё делается за одну линию: <br>
