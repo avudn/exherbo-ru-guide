@@ -57,8 +57,8 @@ uВаши разделы должны выглядеть примерно так
 ```vim /etc/fstab``` <br>
 
 
-``` # <fs>       <mountpoint>    <type>    <opts>      <dump/pass> ```
-``` /dev/sda2    /               ext4      defaults    0 ``` <br>
+``` # <fs>       <mountpoint>    <type>    <opts>      <dump/pass>
+/dev/sda2    /               ext4      defaults    0 ``` <br>
 
 Если вы используете UEFI booting: <br>
 ```echo "/dev/sda1    /boot/efi           vfat      defaults    0 0" >> /mnt/exherbo/etc/fstab``` <br>
