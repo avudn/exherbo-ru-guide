@@ -83,14 +83,14 @@ echo "/dev/sda1    /boot/efi       ext2    defaults    0 0" >> /mnt/exherbo/etc/
 
 ```bash
 mount -o rbind /dev /mnt/exherbo/dev/
-``` <br>
+```
 
 ```bash
 mount -o rbind /sys /mnt/exherbo/sys/
 mount -t proc none /mnt/exherbo/proc/
 mkdir -p /mnt/exherbo/boot/efi 
 mount /dev/sda1 /mnt/exherbo/boot/efi
-``` <br>
+```
 
 
 
