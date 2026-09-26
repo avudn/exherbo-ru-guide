@@ -33,7 +33,7 @@ cfdisk /dev/sda
 ```
 
 Ваши разделы должны выглядеть примерно так: <br>
-<img src="./examples/1.png" height=420> <br>
+<img src="./examples/cfdisk_1.png" height=420> <br>
 В моем случае, /dev/nvme0n1p1 - это будет ESP, а root будет /dev/nvme0n1p2. <br>
 
 Теперь, мы отформатируем разделы.
@@ -150,8 +150,7 @@ make menuconfig
 ```
 Вы увидите меню, в котором кучу всяких модулей и так далее. Вы можете нажать кнопку / чтобы включить поиск. Туда, напишите "FB_EFI". Вы увидите что то на подобии этого:
 <br>
-<img src="./examples/1.png" height=420px> <br>
+<img src="./examples/efi_1.png" height=420px> <br>
 Вы можете нажать 1 чтобы перейти к этому модулю. <br>
-
 Теперь, вы можете включить модуль ```EFI-based Framebuffer Support```. <br>
 
