@@ -76,7 +76,7 @@ echo "/dev/sda1    /boot/efi    vfat    defaults    0 0" >> /mnt/exherbo/etc/fst
 
 ```bash
 echo "/dev/sda1    /boot/efi       ext2    defaults    0 0" >> /mnt/exherbo/etc/fstab
-``` <br>
+```
 
 # 1.6 Chroot, установка ядра.
 Монтируем по очереди: <br>
