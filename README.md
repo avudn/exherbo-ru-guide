@@ -156,5 +156,6 @@ make menuconfig
 <img src="./examples/efi_1.png" height=420px> <br>
 
 ## Если вы пользуетесь NVMe диском:
-
+Нажмите /, и впишите BLK_DEV_NVME, после этого нажмите 1.
+<img src="./examples/nvme_1.png" height=420px>
 
