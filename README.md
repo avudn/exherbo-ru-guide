@@ -51,6 +51,20 @@ USE-флаги, это флаги которые ты выставляешь п�
 
 После того как вы скачали этот файл, можно прописать ```tar xJpf exherbo*xz```, чтобы распаковать все. 
 
+# 1.5 fstab
+Чтобы наша система запустилась, нам нужно создать файл fstab. В нем расписано что и как нужно монтировать при запуске системы. <br>
 
+```vim /etc/fstab``` <br>
+
+```
+# <fs>       <mountpoint>    <type>    <opts>      <dump/pass>
+/dev/sda2    /               ext4      defaults    0 0
+``` <br>
+
+Если вы используете UEFI booting: <br>
+```echo "/dev/sda1    /boot/efi           vfat      defaults    0 0" >> /mnt/exherbo/etc/fstab``` <br>
+
+Если Legacy/BIOS: <br>
+```echo "/dev/sda1    /boot           ext2      defaults    0 0" >> /mnt/exherbo/etc/fstab``` <br>
 
 
