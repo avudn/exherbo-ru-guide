@@ -92,5 +92,18 @@ mkdir -p /mnt/exherbo/boot/efi
 mount /dev/sda1 /mnt/exherbo/boot/efi
 ```
 
+Сделайте это, чтобы у вас была возможность подключиться к интернету.
+
+```
+cp /etc/resolv.conf /mnt/exherbo/etc/resolv.conf
+```
+
+Chroot
+```bash
+env -i TERM=$TERM SHELL=/bin/bash HOME=$HOME $(which chroot) /mnt/exherbo /bin/bash
+source /etc/profile
+export PS1="(chroot) $PS1"
+```
+
 
 
