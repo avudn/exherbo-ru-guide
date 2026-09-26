@@ -15,7 +15,9 @@ USE-флаги, это флаги которые ты выставляешь п�
 Я хочу установить GRUB, с поддержкой UEFI! <br>
 
 В /etc/paludis/options.conf: <br>
-```sys-boot/grub efi``` <br>
+```
+sys-boot/grub efi
+```
 
 Добавив флаг "efi", вы дали знать пакетнику что вы хотите скомпилировать grub с UEFI-поддержкой. Это лишь базовый пример, на самом деле применений у use-флагов очень много. Можно минимизировать пакеты, вырезая из них не нужное вам, и так далее. Коротко: use-флаги позволяют вам кастомизировать пакеты под ваш вкус и цвет.
 
@@ -26,7 +28,9 @@ USE-флаги, это флаги которые ты выставляешь п�
 Мы создадим 2 раздела, для простой установки. По желанию можно использовать и home раздел, про это написано в https://exherbo.org/docs/install-guide.html.
 
 Для этого, мы используем команду:
-``` cfdisk /dev/sda ``` <br>
+``` 
+cfdisk /dev/sda
+```
 
 uВаши разделы должны выглядеть примерно так: <br>
 <img src="./examples/1.png" height=420> <br>
@@ -48,11 +52,14 @@ mkfs.ext4 /dev/sda2
 
 # 1.4 Установка базы
 Мы должны создать директорию для монтирования, и вмонтировать наш root-раздел. Это всё делается за одну линию: <br>
-```mkdir /mnt/exherbo && mount /dev/sda2 /mnt/exherbo && cd /mnt/exherbo``` <br>
+```
+mkdir /mnt/exherbo && mount /dev/sda2 /mnt/exherbo && cd /mnt/exherbo
+```
 
 После этого, мы скачиваем stage-файл Exherbo Linux. Стейдж файл содержит в себе базу системы. <br>
-```curl -O https://stages.exherbo.org/x86_64-pc-linux-gnu/exherbo-x86_64-pc-linux-gnu-gcc-current.tar.xz``` <br>
-
+```
+curl -O https://stages.exherbo.org/x86_64-pc-linux-gnu/exherbo-x86_64-pc-linux-gnu-gcc-current.tar.xz
+```
 После того как вы скачали этот файл, можно прописать ```tar xJpf exherbo*xz```, чтобы распаковать все. 
 
 # 1.5 fstab
