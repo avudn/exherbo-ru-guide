@@ -28,7 +28,7 @@ USE-флаги, это флаги которые ты выставляешь п�
 Для этого, мы используем команду:
 ``` cfdisk /dev/sda ``` <br>
 
-Ваши разделы должны выглядеть примерно так: <br>
+uВаши разделы должны выглядеть примерно так: <br>
 <img src="./examples/1.png" height=420> <br>
 В моем случае, /dev/nvme0n1p1 - это будет ESP, а root будет /dev/nvme0n1p2. <br>
 
@@ -57,8 +57,8 @@ USE-флаги, это флаги которые ты выставляешь п�
 ```vim /etc/fstab``` <br>
 
 
-``` # <fs>       <mountpoint>    <type>    <opts>      <dump/pass>
-/dev/sda2    /               ext4      defaults    0 0 ``` <br>
+``` # <fs>       <mountpoint>    <type>    <opts>      <dump/pass> ```
+``` /dev/sda2    /               ext4      defaults    0 ``` <br>
 
 Если вы используете UEFI booting: <br>
 ```echo "/dev/sda1    /boot/efi           vfat      defaults    0 0" >> /mnt/exherbo/etc/fstab``` <br>
