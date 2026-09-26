@@ -52,18 +52,32 @@ uВаши разделы должны выглядеть примерно так
 После того как вы скачали этот файл, можно прописать ```tar xJpf exherbo*xz```, чтобы распаковать все. 
 
 # 1.5 fstab
-Чтобы наша система запустилась, нам нужно создать файл fstab. В нем расписано что и как нужно монтировать при запуске системы. <br>
+# 1.5 fstab
 
-```vim /etc/fstab``` <br>
+Чтобы наша система запустилась, нам нужно создать файл `fstab`. В нём расписано, что и как нужно монтировать при запуске системы.
 
+```bash
+vim /etc/fstab
+```
 
-``` # <fs>       <mountpoint>    <type>    <opts>      <dump/pass>
-/dev/sda2    /               ext4      defaults    0 ``` <br>
+Добавьте:
 
-Если вы используете UEFI booting: <br>
-```echo "/dev/sda1    /boot/efi           vfat      defaults    0 0" >> /mnt/exherbo/etc/fstab``` <br>
+```fstab
+# <fs>       <mountpoint>    <type>    <opts>      <dump/pass>
+/dev/sda2    /               ext4      defaults    0 1
+```
 
-Если Legacy/BIOS: <br>
-```echo "/dev/sda1    /boot           ext2      defaults    0 0" >> /mnt/exherbo/etc/fstab``` <br>
+Если вы используете **UEFI booting**:
+
+```bash
+echo "/dev/sda1    /boot/efi    vfat    defaults    0 0" >> /mnt/exherbo/etc/fstab
+```
+
+Если используется **Legacy/BIOS**:
+
+```bash
+echo "/dev/sda1    /boot       ext2    defaults    0 0" >> /mnt/exherbo/etc/fstab
+```
+
 
 
