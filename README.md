@@ -150,9 +150,8 @@ make menuconfig
 ```
 Вы увидите меню, в котором кучу всяких модулей и так далее. Вы можете нажать кнопку / чтобы включить поиск. Туда, напишите "FB_EFI". Вы увидите что то на подобии этого:
 <br>
-<img src="./examples/2.png" height=420px> <br>
+<img src="./examples/1.png" height=420px> <br>
 Вы можете нажать 1 чтобы перейти к этому модулю. <br>
 
 Теперь, вы можете включить модуль ```EFI-based Framebuffer Support```. <br>
-<img src="./examples/3.png" height=420px> <br>
 
