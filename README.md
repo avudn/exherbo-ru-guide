@@ -3,9 +3,9 @@
 # 1.0 Почему Exherbo GNU/Linux?
 Exherbo Linux, это дистрибутив на базе Gentoo GNU/Linux. Но базирован он скорее не на коде - а на идеях. В Exherbo, ты компилируешь все с исходного кода, и имеешь возможность использовать use-флаги. <br>
 
-Данный дистрибутив рассчитан на использование опытными пользователями, которые уже имеют довольно хорошее понимание о Linux, и так же готовы принять участие в его разработке. Но установить его, и использовать может каждый! В этом гайде будет расписан каждый шаг, и объяснения действий для успешной установки Exherbo GNU/Linux. <br>
+Данный дистрибутив рассчитан на использование опытными пользователями, которые уже имеют довольно хорошее понимание о Linux, и так же готовы принять участие в его разработке. Но установить его, и использовать может каждый! В этом руководстве будет расписан каждый шаг, и объяснения действий для успешной установки Exherbo GNU/Linux. <br>
 
-В этом гайде я покажу установку glibc systemd Exherbo GNU/Linux
+В этом руководстве я покажу установку glibc systemd Exherbo GNU/Linux
 
 # 1.1 Что такое USE-флаги?
 USE-флаги, это флаги которые ты выставляешь пакетам с целью кастомизации. <br>
@@ -157,16 +157,162 @@ make menuconfig
 
 ## Если вы пользуетесь NVMe диском:
 Используя поиск, убедитесь что включены модули:
-```
+```bash
 CONFIG_BLK_DEV_NVME
 CONFIG_FB_EFI
 ```
 ## Если вы пользуетесь SATA диском:
 Используя поиск, убедитесь что включены модули:
-```
+```bash
 CONFIG_ATA
 CONFIG_SATA_AHCI
 CONFIG_FB_EFI
 ```
+
+# 1.9 Обновление world, загрузчик
+
+Мы прошли самую сложную часть руководства. Теперь осталось лишь обновить world (т.е. все пакеты) и закончить установку! <br>
+
+Перед обновлением world, опытным пользователям рекомендую добавить нужные use-флаги для некоторых пакетов в /etc/paludis/options.conf (Это не обязательно.) <br>
+
+Теперь, мы обновим world. Введите эту команду (Обновление может занять долго):
+```bash
+cave resolve -cx world
+```
+
+И теперь нужно переустановить systemd, чтобы создать machine-id (Не обязательно, но рекомендуется.)
+```bash
+cave resolve --execute --preserve-world --skip-phase test sys-apps/systemd
+```
+
+После переустановки systemd, мы можем установить загрузчик. В моем случае я буду использовать GRUB. <br>
+Для UEFI-систем обязательно нужно добавить use-флаг "efi" для пакета sys-boot/grub. Это можно сделать одной командой.
+```bash
+echo "sys-boot/grub efi" >> /etc/paludis/options.conf"
+```
+В свою очередь для Legacy/BIOS систем это не требуется. Теперь мы установим GRUB:
+```bash
+cave resolve -x sys-boot/grub
+```
+После этого, можно спокойно ввести:
+
+```bash
+grub-install /dev/sda
+```
+
+После успешной установки GRUB на ваш диск, можно сгенерировать конфиг. Это делается следующим образом:
+```bash
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+## Совет #2 
+У многих есть заблуждение что нужно обязательно добавлять аргументы по типу --efi-directory, --target и т.д. при установке GRUB на UEFI системах, но на самом деле можно просто использовать ```grub-install /dev/sda``` и оно установит GRUB даже на UEFI системах без проблем.
+
+# 2.0 Финализация
+Мы прошли самую сложную стадию установки Exherbo GNU/Linux. Теперь мы можем начать финализацию установки. <br>
+Для начала, можно добавить имя хоста:
+```bash
+echo my-hostname > /etc/hostname
+```
+
+Так же, в /etc/hosts, вы можете удалить там абсолютно все, и написать это:
+```bash
+127.0.0.1    my-hostname    localhost
+::1          my-hostname    localhost
+```
+
+my-hostname вы можете заменить на абсолютно любой текст, важно лишь то что бы в нем не было пробелов. <br>
+
+Если вам нужна более широкая поддержка железа, вы можете установить linux-firmware (Рекомендуется.)
+```bash
+cave resolve linux-firmware
+```
+С большой вероятностью, при установке linux-firmware вам выдаст это:
+```bash
+(chroot) EndeavourOS / # cave resolve linux-firmware
+Done: 4 steps
+
+These are the actions I will take, in order:
+
+(nothing to do)
+I encountered the following errors:
+
+!   firmware/linux-firmware
+    Reasons: target
+    Unsuitable candidates:
+      
+firmware/linux-firmware-20260916:0::unavailable (in ::hardware)
+      Masked by unavailable (In a repository which is unavailable)
+firmware/linux-firmware-scm:0::unavailable (in ::hardware)
+    Masked by unavailable (In a repository which is unavailable)
+
+(chroot) EndeavourOS / #
+```
+
+В этом нет ничего страшного. Это лишь означает, что вам не доступен репозиторий откуда вы хотите скачать пакет. Решается это очень просто, вам нужно просто скачать репозиторий:
+```bash
+cave resolve -x repository/hardware
+```
+Данная команда установит вам репозиторий hardware, в котором и находится linux-firmware. Так можно делать с любыми недоступными репозиториями кроме graveyard. <br>
+
+Теперь можно поменять пароль рут-аккаунту.
+```bash
+passwd
+```
+
+По желанию можно создать пользователя:
+```bash
+useradd -mG wheel,audio,video avudn
+passwd avudn
+```
+При создании пользователя вам выдаст предупреждение
+```bash
+Creating mailbox file: No such file or directory
+```
+Оно безобидное и ничего не значит. Его можно проигнорировать <br>
+
+Теперь можно создать локали. В нашем случае, я добавлю англ., и рус. локаль.
+```bash
+localedef -i en_US -f ISO-8859-1 en_US
+localedef -i ru_RU -f UTF-8 ru_RU.UTF-8
+```
+Так же можно поменять системную локаль, но можно это и пропустить. По умолчанию используется ```en_GB.UTF-8```:
+```bash
+echo LANG="en_US.UTF-8" > /etc/env.d/99locale
+```
+
+Теперь можем добавить часовой пояс. Чтобы посмотреть доступные часовые пояса, вы можете написать например ls /usr/share/zoneinfo/Europe, и использовать его. В моем случае, я буду использовать Berlin:
+```bash
+ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+```
+
+
+## ВАЖНО
+В официальном руководстве на установку Exherbo GNU/Linux не написана одна из самых важных вещей - вам буквально нужно включить сервис что бы вы могли загрузиться в TTY, а так же включить systemd-resolved чтобы иметь интернет.
+```bash
+systemctl enable systemd-resolved
+systemctl enable getty@
+```
+Теперь можно выйти из chroot:
+```bash
+exit
+cd
+```
+Размонтировать разделы:
+```bash
+umount -Rl /mnt/exherbo
+```
+Убедитесь что они размонтированы:
+```bash
+lsblk
+```
+
+И финальный: 
+```bash
+reboot
+```
+
+Поздравляю! Если вы сделали всё правильно, то вы установили рабочую систему Exherbo GNU/Linux. Теперь вы можете установить желаемую среду рабочего стола. Руководство будет дополнено в будущем с установкой MangoWM.
+
 
 
