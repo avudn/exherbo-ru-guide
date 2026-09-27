@@ -76,9 +76,10 @@ blkid
 /dev/nvme0n1p1: UUID="A5C4-002D" BLOCK_SIZE="512" TYPE="vfat" PARTUUID="2c198782-00fd-466f-885a-34e49a4a6c28"
 /dev/nvme0n1p2: UUID="43431f15-e4ca-418c-a737-029f3696550f" BLOCK_SIZE="4096" TYPE="ext4" PARTUUID="af9bbeb5-b6f5-40ff-adff-f4dcf9c28932"
 ```
+Здесь нам нужен UUID и TYPE. Это будет использовано в fstab.
 ## Важно
 UUID и TYPE будут отличаться в вашем blkid, в зависимости от того как вы их отформатировали (ext2/vfat). <br>
-
+# 
 После того как мы получили UUID="" наших разделов, мы можем отредактировать fstab:
 ```bash
 vim /etc/fstab
