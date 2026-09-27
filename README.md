@@ -74,19 +74,37 @@ vim /etc/fstab
 
 ```fstab
 # <fs>       <mountpoint>    <type>    <opts>      <dump/pass>
-/dev/sda2    /               ext4      defaults    0 1
+/dev/sdX2    /               ext4      defaults    0 1
 ```
 
 Если вы используете **UEFI booting**:
 
 ```bash
-echo "/dev/sda1    /boot/efi    vfat    defaults    0 0" >> /mnt/exherbo/etc/fstab
+echo "/dev/sdX1    /boot/efi    vfat    defaults    0 0" >> /mnt/exherbo/etc/fstab
 ```
+
+Однако, можно использовать blkid для получения UUID разделов. Это более безопасно в случае если у вас используется много накопителей: (Рекомендуется.)
+```
+blkid
+```
+Вам выдаст что-то на подобии этого:
+```
+/dev/nvme0n1p1: UUID="A5C4-002D" BLOCK_SIZE="512" TYPE="vfat" PARTUUID="2c198782-00fd-466f-885a-34e49a4a6c28"
+/dev/nvme0n1p2: UUID="43431f15-e4ca-418c-a737-029f3696550f" BLOCK_SIZE="4096" TYPE="ext4" PARTUUID="af9bbeb5-b6f5-40ff-adff-f4dcf9c28932"
+```
+Нам важно значение UUID. Его мы будем использовать вместо /dev/sdX в fstab. <br>
+То-есть, ваш fstab будет выглядеть так:
+```
+# <fs>                                       <mountpoint>    <type>    <opts>      <dump/pass>
+UUID=43431f15-e4ca-418c-a737-029f3696550f    /               ext4      defaults    0 1
+UUID=A5C4-002D                               /boot/efi       vfat      defaults    0 0
+```
+
 
 Если используется **Legacy/BIOS**:
 
 ```bash
-echo "/dev/sda1    /boot/efi       ext2    defaults    0 0" >> /mnt/exherbo/etc/fstab
+echo "/dev/sdX1    /boot/efi       ext2    defaults    0 0" >> /mnt/exherbo/etc/fstab
 ```
 
 ## Важно:
@@ -103,7 +121,7 @@ mount -o rbind /dev /mnt/exherbo/dev/
 mount -o rbind /sys /mnt/exherbo/sys/
 mount -t proc none /mnt/exherbo/proc/
 mkdir -p /mnt/exherbo/boot/efi 
-mount /dev/sda1 /mnt/exherbo/boot/efi
+mount /dev/sdX1 /mnt/exherbo/boot/efi
 ```
 
 Сделайте это, чтобы у вас была возможность подключиться к интернету.
@@ -211,7 +229,7 @@ cave resolve -x sys-boot/grub
 После этого, можно спокойно ввести:
 
 ```bash
-grub-install /dev/sda
+grub-install /dev/sdX
 ```
 
 После успешной установки GRUB на ваш диск, можно сгенерировать конфиг. Это делается следующим образом:
