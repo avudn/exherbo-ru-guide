@@ -29,7 +29,7 @@ sys-boot/grub efi
 
 Для этого, мы используем команду:
 ``` 
-cfdisk /dev/sda
+cfdisk /dev/sdX
 ```
 
 Ваши разделы должны выглядеть примерно так: <br>
@@ -40,14 +40,14 @@ cfdisk /dev/sda
 
 ## UEFI:
 ```
-mkfs.vfat -F32 /dev/sda1
-mkfs.ext4 /dev/sda2
+mkfs.vfat -F32 /dev/sdX1
+mkfs.ext4 /dev/sdX2
 ```
 
 ## Legacy
 ```
-mkfs.ext2 /dev/sda1
-mkfs.ext4 /dev/sda2
+mkfs.ext2 /dev/sdX1
+mkfs.ext4 /dev/sdX2
 ```
 
 # 1.4 Установка базы
@@ -76,6 +76,8 @@ blkid
 /dev/nvme0n1p1: UUID="A5C4-002D" BLOCK_SIZE="512" TYPE="vfat" PARTUUID="2c198782-00fd-466f-885a-34e49a4a6c28"
 /dev/nvme0n1p2: UUID="43431f15-e4ca-418c-a737-029f3696550f" BLOCK_SIZE="4096" TYPE="ext4" PARTUUID="af9bbeb5-b6f5-40ff-adff-f4dcf9c28932"
 ```
+## Важно
+UUID и TYPE будут отличаться в вашем blkid, в зависимости от того как вы их отформатировали (ext2/vfat).
 
 После того как мы получили UUID="" наших разделов, мы можем отредактировать fstab:
 ```bash
