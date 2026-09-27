@@ -66,49 +66,38 @@ curl -O https://stages.exherbo.org/x86_64-pc-linux-gnu/exherbo-x86_64-pc-linux-g
 
 Чтобы наша система запустилась, нам нужно создать файл `fstab`. В нём расписано, что и как нужно монтировать при запуске системы.
 
-```bash
-vim /etc/fstab
-```
-
-Добавьте:
-
-```fstab
-# <fs>       <mountpoint>    <type>    <opts>      <dump/pass>
-/dev/sdX2    /               ext4      defaults    0 1
-```
-
-Если вы используете **UEFI booting**:
-
-```bash
-echo "/dev/sdX1    /boot/efi    vfat    defaults    0 0" >> /mnt/exherbo/etc/fstab
-```
-
-Однако, можно использовать blkid для получения UUID разделов. Это более безопасно в случае если у вас используется много накопителей: (Рекомендуется.)
+Перед этим, мы используем команду "blkid" что-бы узнать UUID разделов.
 ```
 blkid
 ```
+
 Вам выдаст что-то на подобии этого:
 ```
 /dev/nvme0n1p1: UUID="A5C4-002D" BLOCK_SIZE="512" TYPE="vfat" PARTUUID="2c198782-00fd-466f-885a-34e49a4a6c28"
 /dev/nvme0n1p2: UUID="43431f15-e4ca-418c-a737-029f3696550f" BLOCK_SIZE="4096" TYPE="ext4" PARTUUID="af9bbeb5-b6f5-40ff-adff-f4dcf9c28932"
 ```
-Нам важно значение UUID. Его мы будем использовать вместо /dev/sdX в fstab. <br>
-То-есть, ваш fstab будет выглядеть так:
+
+После того как мы получили UUID="" наших разделов, мы можем отредактировать fstab:
+```bash
+vim /etc/fstab
+```
+
+UEFI:
 ```
 # <fs>                                       <mountpoint>    <type>    <opts>      <dump/pass>
 UUID=43431f15-e4ca-418c-a737-029f3696550f    /               ext4      defaults    0 1
 UUID=A5C4-002D                               /boot/efi       vfat      defaults    0 0
 ```
 
-
-Если используется **Legacy/BIOS**:
-
-```bash
-echo "/dev/sdX1    /boot/efi       ext2    defaults    0 0" >> /mnt/exherbo/etc/fstab
+Legacy/BIOS:
+```
+# <fs>                                       <mountpoint>    <type>    <opts>      <dump/pass>
+UUID=43431f15-e4ca-418c-a737-029f3696550f    /               ext4      defaults    0 1
+UUID=A5C4-002D                               /boot/efi       ext2      defaults    0 0
 ```
 
 ## Важно:
-"/boot/efi" это лишь точка вмонтирования. Поэтому можно использовать этот путь и на Legacy/BIOS.
+"/boot/efi" это лишь точка вмонтирования. Поэтому можно использовать этот путь и на Legacy/BIOS. Но можно и использовать /boot, просто мне привычнее /boot/efi.
 
 # 1.6 Chroot, установка ядра.
 Монтируем по очереди: <br>
