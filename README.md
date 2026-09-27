@@ -408,7 +408,7 @@ grub-mkconfig -o /boot/grub/grub.cfg.
 doas cave resolve wayland wayland-protocols libinput libdrm libxkbcommon pixman libdisplay-info hwdata pcre2 pango cjson xwayland libxcb
 ```
 У вас возможно будет ошибка что недоступны некоторые репозитории. Просто установите каждый с помощью:
-``
+```
 cave resolve -x repository/(название)
 ```
 
