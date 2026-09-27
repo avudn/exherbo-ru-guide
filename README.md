@@ -196,8 +196,11 @@ make install
 # 1.9 Обновление world, загрузчик
 
 Мы прошли самую сложную часть руководства. Теперь осталось лишь обновить world (т.е. все пакеты) и закончить установку! <br>
-
-Перед обновлением world, опытным пользователям рекомендую добавить нужные use-флаги для некоторых пакетов в /etc/paludis/options.conf (Это не обязательно.) <br>
+Перед обновлением world, советую добавить -recommended_tests в build_options. Это ускорит установку и исправит некоторые ошибки при установке пакетов. Это делается следующим образом:
+```vim /etc/paludis/options.conf```
+```
+*/* build_options: jobs=12 -recommended_tests
+```
 
 Теперь, мы обновим world. Введите эту команду (Обновление может занять долго):
 ```bash
@@ -336,7 +339,102 @@ lsblk
 reboot
 ```
 
-Поздравляю! Если вы сделали всё правильно, то вы установили рабочую систему Exherbo GNU/Linux. Теперь вы можете установить желаемую среду рабочего стола. Руководство будет дополнено в будущем с установкой MangoWM.
+Поздравляю! Если вы сделали всё правильно, то вы установили рабочую систему Exherbo GNU/Linux. Теперь вы можете установить желаемую среду рабочего стола.
 
+# Рабочая среда
+Итак. Вы попали в TTY. Теперь, время сделать систему юзабельной. В качестве оконного менеджера, я буду использовать MangoWM, на базе wlroots.
 
+Для начала, я бы скачал ```doas``` что-бы иметь возможность запускать все как администратор в будущем. Для этого, нам еще будет нужен репозиторий somasis в котором находиться doas.
+```
+cave resolve -x repository/somasis
+cave resolve -x doas
+```
+Теперь, мы можем отредактировать конфиг чтобы пользователи группы wheel могли пользоваться doas. <br>
+```/etc/doas.conf:```
+```
+permist persist :wheel
+```
+Готово! Теперь doas смогут пользоваться все пользователи группы wheel. <br>
 
+# NVIDIA Драйвера
+Это довольно странная часть, ибо драйвера NVIDIA на Exherbo Linux не устанавливаются просто одной командой. Вам придется компилировать опен-кернел модули в ручную. <br>
+Для начала, вам нужно скачать пакет x11-drivers/nvidia-drivers.
+```
+cave resolve -x nvidia-drivers
+```
+После этого, вы должны перейти в директорию /usr/src/nvidia-drivers-(версия) и прописать 1 команду. В моем случае я использую nvidia-drivers-615.71.09:
+```
+cd /usr/src/nvidia-drivers-615.71.09
+make modules_install
+```
+Теперь перегенерируем конфиг в grub.
+grub-mkconfig -o /boot/grub/grub.cfg.
+
+Готово! Теперь вам нужно лишь перезапустить компьютер и у вас заработают драйвера.
+
+# AMD/Intel драйвера
+```
+cd /usr/src/linux-7.x.x
+make menuconfig
+```
+В случае если у вас AMD видеокарта, вам нужно включить следующий модуль в ядре Linux:
+```
+CONFIG_DRM_AMDGPU
+```
+
+Если встроенная от Intel:
+```
+CONFIG_DRM_I915
+```
+
+Теперь можно скомпилировать и установить ядро:
+```
+make -j$(nproc)
+make modules_install
+make install
+```
+
+Теперь перегенерируем конфиг в grub.
+grub-mkconfig -o /boot/grub/grub.cfg.
+
+Готово! Теперь вам нужно лишь перезапустить компьютер и у вас заработают драйвера.
+Теперь перейдем к самому MangoWM. Перед установкой зависимостей, крайне рекомендую на время добавить глобальный use-флаг на gobject-introspection:
+```vim /etc/paludis/options.conf```
+```
+*/* gobject-introspection
+```
+Теперь можем установить нужные зависимости:
+```
+doas cave resolve wayland wayland-protocols libinput libdrm libxkbcommon pixman libdisplay-info hwdata pcre2 pango cjson xwayland libxcb
+```
+У вас возможно будет ошибка что недоступны некоторые репозитории. Просто установите каждый с помощью:
+``
+cave resolve -x repository/(название)
+```
+
+После установки всех зависимостей, можно перейти к компиляции wlroots & scenefx:
+## wlroots
+```
+git clone -b 0.20.2 https://gitlab.freedesktop.org/wlroots/wlroots.git
+cd wlroots
+meson build -Dprefix=/usr
+ninja -C build install
+```
+
+## scenefx
+```
+git clone -b 0.5 https://github.com/wlrfx/scenefx.git
+cd scenefx
+meson build -Dprefix=/usr
+ninja -C build install
+```
+
+# MangoWM
+```
+git clone https://github.com/mangowm/mango.git
+cd mango
+meson build -Dprefix=/usr
+ninja -C build install
+```
+
+Теперь у вас есть рабочий MangoWM. Запустить его можно просто с помощью команды mango в tty. Вы можете установить display manager, но лично я ими не пользуюсь.
