@@ -89,6 +89,9 @@ echo "/dev/sda1    /boot/efi    vfat    defaults    0 0" >> /mnt/exherbo/etc/fst
 echo "/dev/sda1    /boot/efi       ext2    defaults    0 0" >> /mnt/exherbo/etc/fstab
 ```
 
+## Важно:
+"/boot/efi" это лишь точка вмонтирования. Поэтому можно использовать этот путь и на Legacy/BIOS.
+
 # 1.6 Chroot, установка ядра.
 Монтируем по очереди: <br>
 
@@ -168,6 +171,17 @@ CONFIG_ATA
 CONFIG_SATA_AHCI
 CONFIG_FB_EFI
 ```
+
+Теперь можно стрелочками выбрать save, и выйти с помощью quit.
+
+## Компиляция ядра & установка
+Теперь когда мы вышли из настроек ядра, можно по очереди написать эти 3 команды, что-бы скомпилировать и установить ядро:
+```
+make -j$(nproc)
+make modules_install
+make install
+```
+Компиляция может занять немного времени.
 
 # 1.9 Обновление world, загрузчик
 
