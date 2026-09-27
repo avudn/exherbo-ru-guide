@@ -82,7 +82,7 @@ UUID и TYPE будут отличаться в вашем blkid, в завис�
 # 
 После того как мы получили UUID="" наших разделов, мы можем отредактировать fstab:
 ```bash
-vim /etc/fstab
+vim /mnt/exherbo/etc/fstab
 ```
 
 UEFI:
