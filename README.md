@@ -34,7 +34,7 @@ cfdisk /dev/sdX
 
 Ваши разделы должны выглядеть примерно так: <br>
 <img src="./examples/cfdisk_1.png" height=420> <br>
-В моем случае, /dev/nvme0n1p1 - это будет ESP, а root будет /dev/nvme0n1p2. <br>
+В моем случае, /dev/sdX1 - это будет ESP, а root будет /dev/sdX2. <br>
 
 Теперь, мы отформатируем разделы.
 
@@ -53,8 +53,8 @@ mkfs.ext4 /dev/sdX2
 # 1.4 Установка базы
 Мы должны создать директорию для монтирования, и вмонтировать наш root-раздел. Это всё делается за одну линию: <br>
 ```
-mkdir /mnt/exherbo && mount /dev/sda2 /mnt/exherbo && cd /mnt/exherbo
-```
+mkdir /mnt/exherbo && mount /dev/sdX2 /mnt/exherbo && cd /mnt/exherbo
+`X`
 
 После этого, мы скачиваем stage-файл Exherbo Linux. Стейдж файл содержит в себе базу системы. <br>
 ```
@@ -73,8 +73,8 @@ blkid
 
 Вам выдаст что-то на подобии этого:
 ```
-/dev/nvme0n1p1: UUID="A5C4-002D" BLOCK_SIZE="512" TYPE="vfat" PARTUUID="2c198782-00fd-466f-885a-34e49a4a6c28"
-/dev/nvme0n1p2: UUID="43431f15-e4ca-418c-a737-029f3696550f" BLOCK_SIZE="4096" TYPE="ext4" PARTUUID="af9bbeb5-b6f5-40ff-adff-f4dcf9c28932"
+/dev/sdX1: UUID="A5C4-002D" BLOCK_SIZE="512" TYPE="vfat" PARTUUID="2c198782-00fd-466f-885a-34e49a4a6c28"
+/dev/sdX2: UUID="43431f15-e4ca-418c-a737-029f3696550f" BLOCK_SIZE="4096" TYPE="ext4" PARTUUID="af9bbeb5-b6f5-40ff-adff-f4dcf9c28932"
 ```
 Здесь нам нужен UUID и TYPE. Это будет использовано в fstab.
 ## Важно
@@ -230,7 +230,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
 ## Совет #2 
-У многих есть заблуждение что нужно обязательно добавлять аргументы по типу --efi-directory, --target и т.д. при установке GRUB на UEFI системах, но на самом деле можно просто использовать ```grub-install /dev/sda``` и оно установит GRUB даже на UEFI системах без проблем.
+У многих есть заблуждение что нужно обязательно добавлять аргументы по типу --efi-directory, --target и т.д. при установке GRUB на UEFI системах, но на самом деле можно просто использовать ```grub-install /dev/sdX``` и оно установит GRUB даже на UEFI системах без проблем.
 
 # 2.0 Финализация
 Мы прошли самую сложную стадию установки Exherbo GNU/Linux. Теперь мы можем начать финализацию установки. <br>
