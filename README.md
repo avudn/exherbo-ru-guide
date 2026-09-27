@@ -162,14 +162,14 @@ make menuconfig
 Используя поиск, убедитесь что включены модули:
 ```bash
 CONFIG_BLK_DEV_NVME
-CONFIG_FB_EFI
+CONFIG_FB_EFI -- включаем только на UEFI системах
 ```
 ## Если вы пользуетесь SATA диском:
 Используя поиск, убедитесь что включены модули:
 ```bash
 CONFIG_ATA
 CONFIG_SATA_AHCI
-CONFIG_FB_EFI
+CONFIG_FB_EFI -- включаем только на UEFI системах
 ```
 
 Теперь можно стрелочками выбрать save, и выйти с помощью quit.
