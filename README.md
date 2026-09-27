@@ -414,7 +414,7 @@ doas cave resolve wayland wayland-protocols libinput libdrm libxkbcommon pixman 
 cave resolve -x repository/(название)
 ```
 
-После установки всех зависимостей, можно перейти к компиляции wlroots & scenefx:
+После установки всех зависимостей, можно перейти к компиляции wlroots, scenefx, mangowm:
 ## wlroots
 ```
 git clone -b 0.20.2 https://gitlab.freedesktop.org/wlroots/wlroots.git
