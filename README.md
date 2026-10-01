@@ -96,11 +96,8 @@ Legacy/BIOS:
 ```
 # <fs>                                       <mountpoint>    <type>    <opts>      <dump/pass>
 UUID=43431f15-e4ca-418c-a737-029f3696550f    /               ext4      defaults    0 1
-UUID=A5C4-002D                               /boot/efi       ext2      defaults    0 0
+UUID=A5C4-002D                               /boot/       ext2      defaults    0 0
 ```
-
-## Важно:
-"/boot/efi" это лишь точка вмонтирования. Поэтому можно использовать этот путь и на Legacy/BIOS. Но можно и использовать /boot, просто мне привычнее /boot/efi.
 
 # 1.6 Chroot, установка ядра.
 Монтируем по очереди: <br>
@@ -113,9 +110,16 @@ mount -o rbind /dev /mnt/exherbo/dev/
 mount -o rbind /sys /mnt/exherbo/sys/
 mount -t proc none /mnt/exherbo/proc/
 mkdir -p /mnt/exherbo/boot/efi 
-mount /dev/sdX1 /mnt/exherbo/boot/efi
 ```
 
+Теперь, если вы на UEFI:
+```
+mount /dev/sdX1 /mnt/exherbo/boot/efi
+```
+Или если на Legacy/BIOS:
+```
+mount /dev/sdX1 /mnt/exherbo/boot/
+```
 Сделайте это, чтобы у вас была возможность подключиться к интернету.
 
 ```
